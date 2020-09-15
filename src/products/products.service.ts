@@ -10,7 +10,8 @@ export class ProductsService {
                   desc: string,
                   price: number
     ): string {
-        const prodId = new Date().toString();
+        // const prodId = new Date().toString();
+        const prodId = (this.products.length + 1).toString();
         const newProduct = new Product(
             prodId,
             title,
@@ -24,5 +25,10 @@ export class ProductsService {
     getProducts() {
     // getProducts():Product[] {
         return [...this.products];      // we use [...xx] to make a copy of the object so we can't modify it outside
+    }
+
+    getSingleProduct(productId: string) {
+        const product = this.products.find((prod) => prod.id == productId);
+        return {...product};
     }
 }

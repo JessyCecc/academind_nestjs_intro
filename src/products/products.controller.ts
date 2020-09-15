@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post} from "@nestjs/common";
 import {ProductsService} from "./products.service";
 import {Product} from "./products.model";
 
@@ -6,7 +6,7 @@ import {Product} from "./products.model";
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
 
-    @Post()
+    @Post()             // POST /products
     // let's set incomming request configuration to affect all variables
     addProduct(@Body('title') prodTitle: string,
                @Body('description') prodDesc: string,
@@ -16,10 +16,15 @@ export class ProductsController {
         return {id: generatedId}
     }
 
-    @Get()
+    @Get()              // GET /products
     getProducts() {
     // getProducts():Product[] {
         return this.productsService.getProducts();
+    }
+
+    @Get(':id')     // GET /products/2
+    getSingleProduct(@Param('id') id: string) {
+        return this.productsService.getSingleProduct(id);
     }
 }
 

@@ -3,7 +3,8 @@ import {Product} from "./products.model";
 
 @Injectable()
 export class ProductsService {
-    products: Product[] = [];   // initially set to []
+    // set products to private so only be used inside the class
+    private products: Product[] = [];   // initially set to []
 
     insertProduct(title: string,
                   desc: string,
@@ -18,5 +19,10 @@ export class ProductsService {
         );
         this.products.push(newProduct);
         return prodId;
+    }
+
+    getProducts() {
+    // getProducts():Product[] {
+        return [...this.products];      // we use [...xx] to make a copy of the object so we can't modify it outside
     }
 }

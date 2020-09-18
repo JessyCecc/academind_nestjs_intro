@@ -29,9 +29,10 @@ export class ProductsService {
         return result.id as string;
     }
 
-    getProducts() {
-    // getProducts():Product[] {
-        return [...this.products];      // we use [...xx] to make a copy of the object so we can't modify it outside
+    async getProducts() {
+        // return [...this.products];      // we use [...xx] to make a copy of the object so we can't modify it outside
+        const products = await this.productModel.find().exec();     // .exec() will give us a real promise
+        return products as Product[];       // we can be clear by adding "as Product[]" of which type
     }
 
     getSingleProduct(productId: string) {

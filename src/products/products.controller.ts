@@ -16,10 +16,11 @@ export class ProductsController {
         return {id: generatedId}
     }
 
-    @Get()              // GET /products
-    getProducts() {
+    @Get()              // GET /products    < getting all products
+    async getProducts() {
     // getProducts():Product[] {
-        return this.productsService.getProducts();
+        const products = await this.productsService.getProducts();
+        return products;
     }
 
     @Get(':id')     // GET /products/2

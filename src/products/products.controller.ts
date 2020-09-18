@@ -18,9 +18,15 @@ export class ProductsController {
 
     @Get()              // GET /products    < getting all products
     async getProducts() {
-    // getProducts():Product[] {
         const products = await this.productsService.getProducts();
-        return products;
+        console.log("Get products",products);
+        const prods = products.map((prod) => ({
+            id: prod.id,
+            title: prod.title,
+            description: prod.description,
+            price: prod.price,
+        }));
+        return prods;
     }
 
     @Get(':id')     // GET /products/2

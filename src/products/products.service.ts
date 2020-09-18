@@ -54,7 +54,7 @@ export class ProductsService {
         const updatedProduct = {...product};
         let updated = false;
         if (title)  { updatedProduct.title = title; updated=true; }
-        if (desc)   { updatedProduct.desc = desc; updated=true; }
+        if (desc)   { updatedProduct.description = desc; updated=true; }
         if (price)  { updatedProduct.price = price; updated=true; }
         if (!updated) {
             throw new NotFoundException('No data to modify');

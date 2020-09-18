@@ -8,11 +8,11 @@ export class ProductsController {
 
     @Post()             // POST /products
     // let's set incomming request configuration to affect all variables
-    addProduct(@Body('title') prodTitle: string,
+    async addProduct(@Body('title') prodTitle: string,
                @Body('description') prodDesc: string,
                @Body('price') prodPrice: number,
-    ): any {
-        const generatedId = this.productsService.insertProduct(prodTitle, prodDesc, prodPrice);
+    ) {
+        const generatedId = await this.productsService.insertProduct(prodTitle, prodDesc, prodPrice);
         return {id: generatedId}
     }
 

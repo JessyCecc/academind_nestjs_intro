@@ -37,12 +37,12 @@ export class ProductsController {
     // we use PATCH instead of PUT because we want to merge modification instead of replacing
     // PATCH as a body, we could get id in the body, but it's make sense to get it from url
     @Patch(':id')
-    updateProduct(@Param('id') prodId: string,
+    async updateProduct(@Param('id') prodId: string,
                   @Body('title') prodTitle: string,
                   @Body('description') prodDesc: string,
                   @Body('price') prodPrice: number,
-    ): any {
-        return this.productsService.updateProduct(prodId, prodTitle, prodDesc, prodPrice);
+    ) {
+        return await this.productsService.updateProduct(prodId, prodTitle, prodDesc, prodPrice);
 
     }
 

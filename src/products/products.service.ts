@@ -29,10 +29,13 @@ export class ProductsService {
 
     async getSingleProduct(productId: string) {
         const product = await this.findProduct(productId);
-        if (!product) {
-            throw new NotFoundException('Could not found product.');
+        // return product;
+        return {
+            id: product.id,
+            title: product.title,
+            description: product.description,
+            price: product.price,
         }
-        return product;
     }
 
     async updateProduct(productId: string,
@@ -40,16 +43,16 @@ export class ProductsService {
                   desc: string,
                   price: number
     ){
-        // const updatedProduct = await this.findProduct(productId);
-        // // we would like to modify only data that are specify in the body and not the undify data
-        // let updated = false;
-        // if (title)  { updatedProduct.title = title; updated=true; }
-        // if (desc)   { updatedProduct.description = desc; updated=true; }
-        // if (price)  { updatedProduct.price = price; updated=true; }
-        // if (!updated) {
-        //     throw new NotFoundException('No data to modify');
-        // }
-        // this.products[productIndex] = updatedProduct;
+        const updatedProduct = await this.findProduct(productId);
+        // we would like to modify only data that are specify in the body and not the undify data
+        let updated = false;
+        if (title)  { updatedProduct.title = title; updated=true; }
+        if (desc)   { updatedProduct.description = desc; updated=true; }
+        if (price)  { updatedProduct.price = price; updated=true; }
+        if (!updated) {
+            throw new NotFoundException('No data to modify');
+        }
+        await updatedProduct.save();
         return {result: 1};
     }
 
@@ -72,12 +75,7 @@ export class ProductsService {
         if (!product) {
             throw new NotFoundException('Could not found product with this id '+id+'.');
         }
-        return {
-            id: product.id,
-            title: product.title,
-            description: product.description,
-            price: product.price,
-        };
+        return product;
     }
 
 }

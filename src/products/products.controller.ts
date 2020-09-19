@@ -26,7 +26,11 @@ export class ProductsController {
             description: prod.description,
             price: prod.price,
         }));
-        return prods;
+        // return prods;
+        return {
+            dataCount: prods.length,
+            data: prods,
+        }
     }
 
     @Get(':id')     // GET /products/2
@@ -43,12 +47,11 @@ export class ProductsController {
                   @Body('price') prodPrice: number,
     ) {
         return await this.productsService.updateProduct(prodId, prodTitle, prodDesc, prodPrice);
-
     }
 
     @Delete(':id')
-    deleteProduct(@Param('id') prodId: string) {
-        return this.productsService.deleteProduct(prodId);
+    async deleteProduct(@Param('id') prodId: string) {
+        return await this.productsService.deleteProduct(prodId);
     }
 }
 

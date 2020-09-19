@@ -5,9 +5,6 @@ import {Model} from "mongoose";
 
 @Injectable()
 export class ProductsService {
-    // set products to private so only be used inside the class
-    private products: Product[] = [];   // initially set to []
-
     constructor(@InjectModel('Product') private readonly productModel: Model<Product>) {}
 
     async insertProduct(title: string, desc: string, price: number) {
@@ -56,11 +53,23 @@ export class ProductsService {
         return {result: 1};
     }
 
-    deleteProduct(productId: string) {
-        // const [_, index] = this.findProduct(productId);   //alternative
-        // // const index = this.findProduct(productId)[1];
-        // this.products.splice(index, 1);
-        return {result: 1};
+    async deleteProduct(productId: string) {
+        // 1)
+        // const productToDelete = await this.findProduct(productId);
+        // await productToDelete.remove();
+
+        // 2)
+        let result, deletedCount = 0;
+        try {
+            result = await this.productModel.deleteOne({_id: productId}).exec();
+            deletedCount = result.deletedCount; // we can use result.n too
+        } catch(error) {
+            throw new NotFoundException('No data to remove');
+        }
+        if (!deletedCount) {
+            throw new NotFoundException('No data to found');
+        }
+        return {result: deletedCount};
     }
 
     // ----- --------------------------------------------------
@@ -68,7 +77,7 @@ export class ProductsService {
     private async findProduct(id: string): Promise<Product> {
         let product = null;
         try {
-            product = await this.productModel.findById(id);
+            product = await this.productModel.findById(id).exec();
         } catch(error) {
             throw new NotFoundException('This id is invalid ('+id+').');
         }
